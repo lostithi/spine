@@ -1,31 +1,24 @@
 import Script from "next/script";
 
-const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const gaId =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-G84R0MXBEY";
 const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export default function Analytics() {
-  if (!gaId && !metaPixelId) {
-    return null;
-  }
-
   return (
     <>
-      {gaId ? (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-            strategy="afterInteractive"
-          />
-          <Script id="ga4-init" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${gaId}', { anonymize_ip: true });
-            `}
-          </Script>
-        </>
-      ) : null}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+        strategy="beforeInteractive"
+      />
+      <Script id="ga4-init" strategy="beforeInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${gaId}');
+        `}
+      </Script>
 
       {metaPixelId ? (
         <Script id="meta-pixel" strategy="afterInteractive">

@@ -64,9 +64,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${oswald.variable} ${ibmPlexMono.variable}`}>
+      <head>
+        <Analytics />
+      </head>
       <body>
         <JsonLd />
-        <Analytics />
         {children}
       </body>
     </html>
